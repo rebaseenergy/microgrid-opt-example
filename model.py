@@ -8,25 +8,14 @@ import numpy as np
 
 
 
-# def solve_model(model_instance):        
+def solve_model(model_instance):        
     
-#     optimizer = SolverFactory("glpk", executable="/usr/bin/glpsol")
-#     optimizer.solve(model_instance, tee=True, keepfiles=True)
-
-
-#     return model_instance
-
-
-def solve_model(model_instance, solver):
-    if 'path' in solver:
-        optimizer = SolverFactory(solver['name'], executable=solver['path'])
-    else:
-        optimizer = SolverFactory(solver['name'])
-
-    optimizer.solve(model_instance, tee=True, keepfiles=False)
+    optimizer = SolverFactory("glpk", executable="/usr/bin/glpsol")
+    optimizer.solve(model_instance, tee=True, keepfiles=True)
 
 
     return model_instance
+
 
 
 def microgrid_model(model_data):
