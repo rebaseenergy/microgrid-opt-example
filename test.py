@@ -47,7 +47,7 @@ data = {'generation': df['pv_power_kW'].to_list(),                  \
         'grid_fee_power': 10,                                       \
         'grid_overcharge_penalty': 20,                              \
         'grid_power_contract': 0,                                   \
-        'dt': 0.25,                                                    \
+        'dt': 0.25,                                                 \
 }
     
     
