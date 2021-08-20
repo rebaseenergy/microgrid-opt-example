@@ -110,9 +110,9 @@ def microgrid_model(model_data):
     model.grid_energy_cost = Constraint(model.T, rule=grid_energy_cost)
 
     # Grid power cost
-    # def grid_power_cost(model):
-    #     return model.COST_GRID_POWER == model.grid_fee_power*model.P_CONTR + model.grid_overcharge_penalty*model.P_OVER
-    # model.grid_power_cost = Constraint(model.T, rule=grid_power_cost)
+    def grid_power_cost(model):
+        return model.COST_GRID_POWER == model.grid_fee_power*model.P_CONTR + model.grid_overcharge_penalty*model.P_OVER
+    model.grid_power_cost = Constraint(model.T, rule=grid_power_cost)
 
 
     # Overcharge
