@@ -73,14 +73,58 @@ r = microgrid_results_analysis(s)
 
 # Make plots
 df['battery_soc'] = s['battery_soc']
+df['battery_charge'] = s['battery_charge']
+df['battery_discharge'] = s['battery_discharge']
+
 df['power_sell'] = s['power_sell']
 df['power_buy'] = s['power_buy']
+
+df['cost_energy'] = s['cost_energy']
+df['grid_fee_energy'] = s['cost_grid_energy']
+
+
+# Split battery charge into battery charge from pv and battery charge from grid
+df['battery_charge_from_grid'] = df['power_buy'] - df['load_power_kW']
+df.loc[(df['power_buy'] - df['load_power_kW']) < 0.00001, 'battery_charge_from_grid'] = 0.0
+df['battery_charge_from_pv'] = df['battery_charge'] - df['battery_charge_from_grid']
+
+
+
+plt.plot(df['cost_energy'],color = 'gray')
+plt.plot(df['grid_fee_energy'],color = 'black')
+plt.xticks(rotation = 45)
+plt.ylabel('Energy cost [€]')
+plt.title('Electricity cost and grid energy fee')
+plt.legend(['Electricity cost [€]','Grid energy fee [€]'])
+plt.grid()
+plt.show()
+
+
+plt.plot(df['battery_charge'],color = 'red')
+plt.plot(-df['battery_discharge'],color = 'green')
+plt.xticks(rotation = 45)
+plt.ylabel('Battery power [kW]')
+plt.title('Battery power')
+plt.legend(['Charging [kW]','Discharging [kW]'])
+plt.grid()
+plt.show()
 
 
 plt.plot(df['battery_soc'],color = 'green')
 plt.xticks(rotation = 45)
 plt.ylabel('Battery soc [kWh]')
-plt.title('Battery soc [kWh]')
+plt.title('Battery soc')
+plt.legend(['Battery soc [kWh]'])
+plt.grid()
+plt.show()
+
+
+plt.plot(df['battery_charge_from_pv'],color = 'green')
+plt.plot(df['battery_charge_from_grid'],color = 'red')
+plt.xticks(rotation = 45)
+plt.ylabel('Battery charge [kW]')
+plt.title('Battery charge from PV and Grid')
+plt.legend(['Charging from PV [kW]','Charging from Grid [kW]'])
 plt.grid()
 plt.show()
 
@@ -88,7 +132,7 @@ plt.show()
 plt.plot(df['power_sell'],color = 'red')
 plt.xticks(rotation = 45)
 plt.ylabel('Power [kW]')
-plt.title('Power sold [kW]')
+plt.title('Power sold')
 plt.grid()
 plt.show()
 
@@ -96,6 +140,6 @@ plt.show()
 plt.plot(df['power_buy'],color = 'red')
 plt.xticks(rotation = 45)
 plt.ylabel('Power [kW]')
-plt.title('Power bought [kW]')
+plt.title('Power bought')
 plt.grid()
 plt.show()

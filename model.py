@@ -8,10 +8,13 @@ import numpy as np
 
 
 
-def solve_model(model_instance):        
-    
-    optimizer = SolverFactory("glpk", executable="/usr/bin/glpsol")
-    optimizer.solve(model_instance, tee=True, keepfiles=True)
+def solve_model(model_instance, solver):
+    if 'path' in solver:
+        optimizer = SolverFactory(solver['name'], executable=solver['path'])
+    else:
+        optimizer = SolverFactory(solver['name'])
+
+    optimizer.solve(model_instance, tee=True, keepfiles=False)
 
 
     return model_instance
